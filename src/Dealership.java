@@ -1,56 +1,157 @@
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class Dealership {
-    String name;
-    String address;
-    String phone;
-    ArrayList<String> inventory = new ArrayList<String>();
+class Dealership {
+    private String name;
+    private String address;
+    private String phone;
+    private ArrayList<Vehicle> inventory;
 
-    //Contractor
-
-    Dealership (String name, String address, String phone){
+    //CONSTRUCTOR
+    Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;
-        this.inventory = new ArrayList<>(inventory);
-
+        this.inventory = new ArrayList<Vehicle>();
     }
 
-    //Getters
-
-    void getVehiclesByPrice(String min, String max){
-        //List Vehicle by Price
+    public String toString() {
+        return String.format(
+                "DEALERSHIP NAME: '%s' #CARS: %d\n",
+                this.name, this.inventory.size()
+        );
     }
 
-    void getVehiclesByMake(String min, String max){
-        //List Vehicle by Make
+    //METHODS
+    public List<Vehicle> getVehiclesByPrice(double min, double max) {
+        ArrayList<Vehicle> matches = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getPrice() >= min && v.getPrice() <= max) {
+                matches.add(v);
+            }
+        }
+        return matches;
     }
 
-    void getVehiclesByYear(String min, String max){
-        //List Vehicle by Year
+    public List<Vehicle> getVehiclesByMakeModel(String make, String model) {
+        ArrayList<Vehicle> matches = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getMake().equalsIgnoreCase(make) && v.getModel().equalsIgnoreCase(model)) {
+                matches.add(v);
+            }
+        }
+        return matches;
     }
 
-    void getVehiclesByColor(String min, String max){
-        //List Vehicle by Color
+    public List<Vehicle> getVehiclesByYear(int min, int max) {
+        ArrayList<Vehicle> matches = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getYear() >= min && v.getYear() <= max) {
+                matches.add(v);
+            }
+        }
+        return matches;
     }
 
-    void getVehiclesByMileage(String min, String max){
-        //List Vehicle by Mileage
+    public List<Vehicle> getVehiclesByColor(String color) {
+        ArrayList<Vehicle> matches = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getColor().equalsIgnoreCase(color)) {
+                matches.add(v);
+            }
+        }
+        return matches;
     }
 
-    void getVehiclesByType(String min, String max){
-        //List Vehicle by Type
+    public List<Vehicle> getVehiclesByMileage(int min, int max) {
+        ArrayList<Vehicle> matches = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getMiles() >= min && v.getMiles() <= max) {
+                matches.add(v);
+            }
+        }
+        return matches;
     }
 
-    void getVehiclesByAll(String min, String max){
-        //List Vehicle All
+    public List<Vehicle> getVehiclesByType(String vehicleType) {
+        ArrayList<Vehicle> matches = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getType().equalsIgnoreCase(vehicleType)) {
+                matches.add(v);
+            }
+        }
+        return matches;
     }
-    void addVehicles(String vehicle){
 
-        System.out.println("Add Vehicle");
+    public List<Vehicle> getAllVehicles() {
+        return inventory;
     }
 
-    void removeVehicle(String min, String max){
-        //List Vehicle
+    Vehicle addVehicle(Vehicle v) {
+        inventory.add(v);
+        return v;
+    }
+
+    void removeVehicle(Vehicle v) {
+        inventory.remove(v);
+    }
+
+    public static void main(String[] args) {
+        var d = new Dealership("XYZ MOTORS", "", "");
+
+        //ADD TO INVENTORY
+        d.addVehicle(new Vehicle(
+                123,
+                1999,
+                "MAZDA",
+                "MX-5",
+                "ROADSTER",
+                "WHITE",
+                128_000,
+                5_000
+        ));
+
+        d.addVehicle(new Vehicle(
+                456,
+                2008,
+                "HYUNDAI",
+                "ELANTRA GT",
+                "HATCHBACK",
+                "BLACK",
+                111_000,
+                10_000
+        ));
+
+        //SHOW DEALERSHIP
+        System.out.println(d);
+
+        //SHOW INVENTORY
+//        var matches = d.getVehiclesByColor("WHITE");
+//        var matches = d.getAllVehicles();
+//        var matches = d.getVehiclesByYear(2000, 2025);
+//        var matches = d.getVehiclesByType("ROADSTER");
+//        var matches = d.getVehiclesByPrice(4000,6000);
+//        var matches = d.getVehiclesByMileage(1,111_000);
+        var matches = d.getVehiclesByMakeModel("MAZDA", "MX-5");
+        if (matches.size() == 0) {
+            System.out.println("NO MATCHES");
+        } else {
+            for (Vehicle v : matches) {
+                System.out.println(v);
+            }
+        }
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public String getPhone() {
+        return this.phone;
     }
 }
